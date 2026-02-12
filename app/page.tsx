@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import useSWR from "swr";
+import { useQuery } from "@tanstack/react-query";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { SearchHero } from "@/components/search-hero";
@@ -16,16 +16,18 @@ interface SearchResponse {
   scraped: boolean;
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export default function Page() {
   const [query, setQuery] = useState<string | null>(null);
 
-  const { data, isLoading } = useSWR<SearchResponse>(
-    query ? `/api/search?q=${encodeURIComponent(query)}` : null,
-    fetcher,
-    { revalidateOnFocus: false }
-  );
+  const { data, isLoading } = useQuery<SearchResponse>({
+    queryKey: ["search", query],
+    queryFn: async () => {
+      const res = await fetch(`/api/search?q=${encodeURIComponent(query!)}`);
+      if (!res.ok) throw new Error("Search failed");
+      return res.json();
+    },
+    enabled: !!query,
+  });
 
   const handleSearch = useCallback((q: string) => {
     setQuery(q);

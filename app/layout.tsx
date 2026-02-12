@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
+import { QueryProvider } from '@/components/query-provider'
 
 import './globals.css'
 
@@ -22,7 +23,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${_inter.variable} ${_spaceGrotesk.variable} font-sans antialiased`}>{children}</body>
+      <body className={`${_inter.variable} ${_spaceGrotesk.variable} font-sans antialiased`}>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   )
 }
