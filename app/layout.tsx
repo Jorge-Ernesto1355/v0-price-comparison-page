@@ -1,19 +1,13 @@
-import type { Metadata, Viewport } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
-import { QueryProvider } from '@/components/query-provider'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 
 import './globals.css'
 
-const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
-const _spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' })
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'PriceScan - Find the Lowest Prices Anywhere',
-  description: 'Search any product and compare prices across multiple online stores. Find the best deals on electronics, furniture, clothing, and more.',
-}
-
-export const viewport: Viewport = {
-  themeColor: '#2f9e6e',
+  title: 'PriceScan - Price Comparison',
+  description: 'Compare prices across stores.',
 }
 
 export default function RootLayout({
@@ -23,8 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${_inter.variable} ${_spaceGrotesk.variable} font-sans antialiased`}>
-        <QueryProvider>{children}</QueryProvider>
+      <body className={`${inter.className} antialiased`}>
+        {children}
       </body>
     </html>
   )
