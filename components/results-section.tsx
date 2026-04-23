@@ -4,27 +4,77 @@ import { ArrowDownUp, Store } from "lucide-react";
 import type { ProductResult } from "@/app/api/search/route";
 import { ProductCard } from "@/components/product-card";
 import { useState } from "react";
+import { StoreDropdown } from "./ui/StoreDropDown";
+import { SortDropdown } from "./FilterByPrice";
 
 type SortBy = "price-asc" | "price-desc" | "store";
+import { motion } from "framer-motion";
+import { useFavoritesStore } from "@/hooks/FavoriteStore";
+
+
+
+export function FavoritesButtonUI() {
+
+  const {favorites, showFavorites} = useFavoritesStore();  
+
+  
+
+  return (
+    <motion.button
+      onClick={showFavorites}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="
+        flex items-center gap-2 px-4 py-2 
+        rounded-full border 
+        bg-white text-gray-800
+        text-sm font-medium
+        shadow-sm hover:bg-gray-100
+        transition
+      "
+    >
+      <span>🤍</span>
+      Favorites {favorites.length > 0 && (
+        <span className="ml-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
+          {favorites.length}
+        </span>
+      )}
+    </motion.button>
+  );
+}
 
 export function ResultsSection({
   results,
   query,
+  selectedStores,
+  SelectStore,
 }: {
   results: ProductResult[];
   query: string;
+  selectedStores: string[];
+  SelectStore: (stores: string[]) => void;
 }) {
   const [sortBy, setSortBy] = useState<SortBy>("price-asc");
+  
+  const {favorites, favoritesShown} = useFavoritesStore();
+
+    
+  
 
   const sorted = [...results].sort((a, b) => {
     if (sortBy === "price-asc") return a.price - b.price;
     if (sortBy === "price-desc") return b.price - a.price;
     return a.store.localeCompare(b.store);
   });
+  
 
   const lowestPrice = sorted.length > 0 ? Math.min(...sorted.map((r) => r.price)) : 0;
   const highestPrice = sorted.length > 0 ? Math.max(...sorted.map((r) => r.price)) : 0;
   const savings = highestPrice - lowestPrice;
+
+
+
+  
 
   return (
     <section className="mx-auto max-w-6xl px-4 pb-20">
@@ -42,17 +92,10 @@ export function ResultsSection({
           <label htmlFor="sort" className="sr-only">
             Sort by
           </label>
+          <FavoritesButtonUI  />
+          <StoreDropdown selectedStores={selectedStores} setSelectedStores={SelectStore} />
           <ArrowDownUp className="h-4 w-4 text-muted-foreground" />
-          <select
-            id="sort"
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as SortBy)}
-            className="rounded-lg border border-input bg-card px-3 py-2 text-sm text-card-foreground outline-none ring-ring focus:ring-2"
-          >
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="store">Store Name</option>
-          </select>
+          <SortDropdown sortBy={sortBy} setSortBy={setSortBy} />
         </div>
       </div>
 
@@ -76,14 +119,31 @@ export function ResultsSection({
       )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {sorted.map((product, i) => (
-          <ProductCard
-            key={`${product.store}-${i}`}
-            product={product}
-            isLowest={product.price === lowestPrice}
-            lowestPrice={lowestPrice}
-          />
-        ))}
+       {favoritesShown ? (
+          favorites.length > 0 ? (
+            favorites.map((product) => (
+              <ProductCard
+                key={`${product.store}-${product.id}`}
+                product={product}
+                isLowest={product.price === lowestPrice}
+                lowestPrice={lowestPrice}
+              />
+            ))
+          ) : (
+            <p className="text-muted-foreground">
+              No favorite products found.
+            </p>
+          )
+        ) : (
+          sorted.map((product, i) => (
+            <ProductCard
+              key={`${product.store}-${i}`}
+              product={product}
+              isLowest={product.price === lowestPrice}
+              lowestPrice={lowestPrice}
+            />
+          ))
+        )}
       </div>
     </section>
   );

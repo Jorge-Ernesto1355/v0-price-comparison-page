@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { QueryProvider } from '@/components/query-provider'
-
+import { sileo, Toaster } from "sileo";
 import './globals.css'
 
 const _inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -25,6 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${_inter.variable} ${_spaceGrotesk.variable} font-sans antialiased`}>
         <QueryProvider>{children}</QueryProvider>
+        <Toaster position="top-center" />
       </body>
     </html>
   )

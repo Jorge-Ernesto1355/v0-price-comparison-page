@@ -15,7 +15,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-12">
         <div className="mb-8 text-center">
           <h3 className="mb-2 text-sm font-semibold text-foreground">
-            We compare prices from top stores
+            Tiendas escaneadas
           </h3>
           <div className="flex flex-wrap items-center justify-center gap-4">
             {stores.map((store) => (
@@ -30,8 +30,9 @@ export function SiteFooter() {
         </div>
         <div className="border-t border-border pt-6 text-center text-xs text-muted-foreground">
           <p>
-            PriceScan scans online stores to find the best prices. Prices shown
-            are approximate and may vary.
+            DashScan  is a price comparison tool built with Next.js, React Query, and Tailwind CSS. It scrapes prices from multiple online stores to help you find the best deals. This project is open source on{" "}
+             
+           
           </p>
         </div>
       </div>

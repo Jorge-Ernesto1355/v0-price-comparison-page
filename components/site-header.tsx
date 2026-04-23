@@ -9,12 +9,12 @@ export function SiteHeader() {
             <ScanSearch className="h-4 w-4 text-primary-foreground" />
           </div>
           <span className="font-serif text-lg font-bold text-foreground">
-            PriceScan
+            DashScan
           </span>
         </a>
         <nav className="flex items-center gap-6">
           <span className="hidden text-sm text-muted-foreground sm:block">
-            Compare prices instantly
+            Compara precios de miles de productos en segundos
           </span>
         </nav>
       </div>

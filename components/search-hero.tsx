@@ -35,15 +35,16 @@ export function SearchHero({
       <div className="flex flex-col items-center gap-3 text-center">
         <div className="inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-sm font-medium text-accent-foreground">
           <span className="inline-block h-2 w-2 rounded-full bg-primary" />
-          Compare prices across stores
+          Compara los precios de miles de productos en segundos
         </div>
         <h1 className="max-w-3xl text-balance font-serif text-4xl font-bold tracking-tight text-foreground md:text-6xl">
-          Find the lowest price for{" "}
-          <span className="text-primary">anything</span>
+          Encuentra el precio más bajo{" "}
+          <span className="text-primary">en segundos</span>
         </h1>
         <p className="max-w-xl text-pretty text-lg text-muted-foreground">
-          Search any product and we'll scan multiple online stores to find you
-          the best deal. Stop overpaying.
+          Busca cualquier producto y escanearemos múltiples tiendas en línea para
+          encontrar la mejor oferta para ti. Deja de pagar de más.
+     
         </p>
       </div>
 
@@ -57,7 +58,7 @@ export function SearchHero({
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search for any product..."
+            placeholder="Busca un producto, marca o categoría..."
             className="h-14 w-full rounded-xl border border-input bg-card pl-12 pr-4 text-base text-card-foreground shadow-sm outline-none ring-ring transition-shadow placeholder:text-muted-foreground focus:ring-2 focus:ring-offset-2 focus:ring-offset-background"
             aria-label="Search products"
           />

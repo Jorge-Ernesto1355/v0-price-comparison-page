@@ -1,32 +1,82 @@
 import { ExternalLink, Tag, TrendingDown } from "lucide-react";
 import type { ProductResult } from "@/app/api/search/route";
 import { Badge } from "@/components/ui/badge";
+import FavoriteButton from "./favoriteButton";
+import { sileo } from "sileo";
+import { useFavoritesStore } from "@/hooks/FavoriteStore";
+import { ProductImage } from "./ui/ProductImage";
 
-const storeColors: Record<string, string> = {
-  Amazon: "bg-[#FF9900]/10 text-[#FF9900]",
-  Walmart: "bg-[#0071DC]/10 text-[#0071DC]",
-  "Best Buy": "bg-[#0046BE]/10 text-[#0046BE]",
-  Target: "bg-[#CC0000]/10 text-[#CC0000]",
-  eBay: "bg-[#E53238]/10 text-[#E53238]",
-  Newegg: "bg-[#F68B1E]/10 text-[#F68B1E]",
-  "B&H Photo": "bg-[#000]/10 text-foreground",
-  Costco: "bg-[#E31837]/10 text-[#E31837]",
+
+
+type StoreConfig = {
+  logo: string;
+  color: string;
 };
+
+export const STORE_CONFIG: Record<string, StoreConfig> = {
+  amazon: {
+    logo: "https://imgs.search.brave.com/we4J9Nce1CapScBva4Ygw_EXcYv5Jcson02x0CePSjs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly8xMDAw/bG9nb3MubmV0L3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDE2LzEw/L0FtYXpvbi1Mb2dv/LTIwMDAtNTAweDI4/MS5wbmc",
+    color: "#FF9900",
+  },
+  walmart: {
+    logo: "https://imgs.search.brave.com/K5ss7ZLCMcJdko1VuSAeLeKClYqmp6nm7igtm_kGTjE/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sb2dv/cy1tYXJjYXMuY29t/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDIx/LzExL1dhbG1hcnQt/TG9nby02NTB4MzY2/LnBuZw",
+    color: "#0071CE",
+  },
+  mercadolibre: {
+    logo: "https://imgs.search.brave.com/o4oxhmbFyszxhjOJJL3CWqgCzAAbyR_zZRh8gvfmeBg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/bG9nby53aW5lL2Ev/bG9nby9NZXJjYWRv/TGlicmUvTWVyY2Fk/b0xpYnJlLUxvZ28u/d2luZS5zdmc",
+    color: "#FFE600",
+  },
+  target: {
+    logo: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Target_logo.svg",
+    color: "#CC0000",
+  },
+  aurrera: {
+    logo: "https://imgs.search.brave.com/aF-9uiL2odfNnMr4nhQT0VOm07dsecWNkQsrfDaRuhk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuc2Vla2xvZ28u/Y29tL2xvZ28tcG5n/LzUwLzIvYm9kZWdh/LWF1cnJlcmEtbG9n/by1wbmdfc2Vla2xv/Z28tNTA0ODc5LnBu/Zw",
+    color: "#2E7D32",
+  },
+  costco: {
+    logo: "https://imgs.search.brave.com/e9CQbyArAzpo8UWkl53MJfA-msXbqdxMZ6xM6y34IJw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly8xMDAw/bG9nb3MubmV0L3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDE3LzA4/L0Nvc3Rjby1Mb2dv/LTE5OTMtNzAweDM5/NC5wbmc",
+    color: "#C8102E",
+  },
+  liverpool: {
+    logo: "https://imgs.search.brave.com/s3ungnCbDHA8bBuf9Am2bM1UQLuMCDXCkDMrxS_j-M8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuc2Vla2xvZ28u/Y29tL2xvZ28tcG5n/LzI1LzIvbGl2ZXJw/b29sLWxvZ28tcG5n/X3NlZWtsb2dvLTI1/MjcwMC5wbmc",
+    color: "#E10098",
+  },
+  coppel: {
+    logo:"https://imgs.search.brave.com/4qa9iW_pMwO2I8RSlYS3gtKMof_1vv07jfXzEFNXI9c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMuY2RubG9nby5j/b20vbG9nb3MvYy8x/OC9jb3BwZWxfdGh1/bWIucG5n",
+    color: "#FFD600",
+  },
+}; 
+
+function getStoreConfig(store: string): StoreConfig {
+  return STORE_CONFIG[store] || {
+    logo: "https://via.placeholder.com/80?text=Store",
+    color: "#999",
+  };
+}
 
 export function ProductCard({
   product,
   isLowest,
   lowestPrice,
+  
 }: {
   product: ProductResult;
   isLowest: boolean;
   lowestPrice: number;
+ 
 }) {
+
+   const { toggleFavorite, isFavorite } = useFavoritesStore();
+
+    const storeConfig = getStoreConfig(product.store);
+    
   const savings =
     !isLowest && lowestPrice > 0
       ? ((product.price - lowestPrice) / product.price) * 100
       : 0;
 
+      console.log(product.url)
   return (
     <a
       href={product.url}
@@ -50,14 +100,20 @@ export function ProductCard({
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
           <div className="mb-2 flex items-center gap-2">
+            <div className="h-10 flex items-center justify-center">
+  <img
+    src={storeConfig.logo}
+    alt={product.store}
+    className="max-h-full max-w-full object-contain"
+  />
+</div>
             <span
-              className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-semibold ${
-                storeColors[product.store] ||
-                "bg-secondary text-secondary-foreground"
-              }`}
+              className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-semibold`}
+              style={{ backgroundColor: storeConfig.color + "80", color:"white" }}
             >
               {product.store}
             </span>
+           
             {!isLowest && savings > 0 && (
               <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
                 <Tag className="h-3 w-3" />
@@ -65,12 +121,31 @@ export function ProductCard({
               </span>
             )}
           </div>
+           {/* 🖼 IMAGE HERE */}
+  <div className="relative w-full h-44 rounded-lg overflow-hidden bg-muted flex items-center justify-center">
+    <ProductImage src={product.imageUrl} alt={product.title} />
+  </div>
           <h3 className="line-clamp-2 text-sm font-medium leading-snug text-card-foreground group-hover:text-primary">
             {product.title}
           </h3>
         </div>
-        <ExternalLink className="mt-1 h-4 w-4 flex-shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+        
+        <FavoriteButton  size={32} defaultFaved={isFavorite(product.id)} onClick={(e) => {  
+            e.preventDefault();
+            e.stopPropagation();
+            if(!isFavorite(product.id)) {
+              sileo.success({title: "Added to favorites", description: product.title,});
+            } else {
+              sileo.info({title: "Removed from favorites", description: product.title,});
+            }
+
+            toggleFavorite(product);  
+            
+        }} />
+
+        
       </div>
+      
 
       <div className="mt-auto flex items-end justify-between">
         <div>
