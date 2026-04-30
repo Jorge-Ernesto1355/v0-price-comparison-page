@@ -6,8 +6,8 @@ import { motion, AnimatePresence } from "framer-motion";
 type SortBy = "price-asc" | "price-desc";
 
 const OPTIONS: { value: SortBy; label: string }[] = [
-  { value: "price-asc", label: "Price: Low to High" },
-  { value: "price-desc", label: "Price: High to Low" },
+  { value: "price-asc", label: "precio: bajo a alto" },
+  { value: "price-desc", label: "precio: alto a bajo" },
 ];
 
 export function SortDropdown({

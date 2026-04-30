@@ -2,6 +2,7 @@
 
 import { Search } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import AutocompleteInput from "./AutoCompleteInput";
 
 const suggestions = [
   "iPhone 16 Pro",
@@ -30,6 +31,10 @@ export function SearchHero({
     }
   }
 
+  
+
+
+
   return (
     <section className="flex flex-col items-center gap-8 px-4 py-16 md:py-24">
       <div className="flex flex-col items-center gap-3 text-center">
@@ -54,21 +59,22 @@ export function SearchHero({
       >
         <div className="relative flex-1">
           <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-          <input
+          <AutocompleteInput onSearch={onSearch} query={query} />
+          {/* <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Busca un producto, marca o categoría..."
             className="h-14 w-full rounded-xl border border-input bg-card pl-12 pr-4 text-base text-card-foreground shadow-sm outline-none ring-ring transition-shadow placeholder:text-muted-foreground focus:ring-2 focus:ring-offset-2 focus:ring-offset-background"
             aria-label="Search products"
-          />
+          /> */}
         </div>
         <button
           type="submit"
           disabled={isLoading || !query.trim()}
           className="h-14 rounded-xl bg-primary px-8 text-base font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-50"
         >
-          {isLoading ? "Scanning..." : "Search"}
+          {isLoading ? "Buscando..." : "Buscar"}
         </button>
       </form>
 

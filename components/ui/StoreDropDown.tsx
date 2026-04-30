@@ -42,8 +42,8 @@ export function StoreDropdown({
       >
         <span className="text-sm">
           {selectedStores.length === 0
-            ? "All stores"
-            : `${selectedStores.length} selected`}
+            ? "Selecciona tiendas"
+            : `${selectedStores.length} Seleccionada(s)`}
         </span>
 
         {/* 🔄 Animated arrow */}
@@ -72,11 +72,11 @@ export function StoreDropdown({
                   setSelectedStores(Object.keys(STORE_CONFIG))
                 }
               >
-                Select All
+                Selecciona todo
               </button>
 
               <button onClick={() => setSelectedStores([])}>
-                Clear
+                Limpiar
               </button>
             </div>
 

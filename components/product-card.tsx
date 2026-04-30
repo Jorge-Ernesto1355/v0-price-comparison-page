@@ -5,6 +5,7 @@ import FavoriteButton from "./favoriteButton";
 import { sileo } from "sileo";
 import { useFavoritesStore } from "@/hooks/FavoriteStore";
 import { ProductImage } from "./ui/ProductImage";
+import StarRating from "./ui/Rating";
 
 
 
@@ -107,12 +108,7 @@ export function ProductCard({
     className="max-h-full max-w-full object-contain"
   />
 </div>
-            <span
-              className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-semibold`}
-              style={{ backgroundColor: storeConfig.color + "80", color:"white" }}
-            >
-              {product.store}
-            </span>
+         
            
             {!isLowest && savings > 0 && (
               <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
@@ -125,9 +121,10 @@ export function ProductCard({
   <div className="relative w-full h-44 rounded-lg overflow-hidden bg-muted flex items-center justify-center">
     <ProductImage src={product.imageUrl} alt={product.title} />
   </div>
-          <h3 className="line-clamp-2 text-sm font-medium leading-snug text-card-foreground group-hover:text-primary">
+          <h3 className="line-clamp-2 text-sm font-medium leading-snug text-card-foreground group-hover:text-primary pt-10">
             {product.title}
           </h3>
+
         </div>
         
         <FavoriteButton  size={32} defaultFaved={isFavorite(product.id)} onClick={(e) => {  
@@ -160,7 +157,9 @@ export function ProductCard({
               maximumFractionDigits: 2,
             })}
           </p>
+           <StarRating value={product.rating} />
         </div>
+        
         <span className="text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
           Visit store
         </span>

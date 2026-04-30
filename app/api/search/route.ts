@@ -2,9 +2,15 @@
 // ENHANCED CATALOG WITH REAL IMAGES & STORE URLs
 // =======================
 
-const ELECTRONICS_CATALOG: CatalogProduct[] = [
-  // ================= PHONES =================
-  { name: "iPhone 11", category: "phone", min: 7000, max: 11000, image: "https://images.unsplash.com/photo-1603898037225-1c6b0fdb7f98?w=500&h=500&fit=crop", url: "https://amazon.com.mx/s?k=iPhone+11" },
+const withRatings = (products: Omit<CatalogProduct, "rating">[]): CatalogProduct[] => {
+  return products.map((product) => ({
+    ...product,
+    rating: +(Math.random() * (5 - 3.5) + 3.5).toFixed(1), // ⭐ entre 3.5 y 5.0
+  }));
+};
+
+const ELECTRONICS_CATALOG: CatalogProduct[] = withRatings([
+    { name: "iPhone 11", category: "phone", min: 7000, max: 11000, image: "https://images.unsplash.com/photo-1603898037225-1c6b0fdb7f98?w=500&h=500&fit=crop", url: "https://amazon.com.mx/s?k=iPhone+11" },
   { name: "iPhone 12", category: "phone", min: 9000, max: 14000, image: "https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=500&h=500&fit=crop", url: "https://amazon.com.mx/s?k=iPhone+12" },
   { name: "iPhone 13", category: "phone", min: 12000, max: 18000, image: "https://images.unsplash.com/photo-1632661674596-618e6c8b6f3c?w=500&h=500&fit=crop", url: "https://amazon.com.mx/s?k=iPhone+13" },
   { name: "iPhone 14", category: "phone", min: 15000, max: 22000, image: "https://images.unsplash.com/photo-1664478546389-4c3d2e1d0b3c?w=500&h=500&fit=crop", url: "https://amazon.com.mx/s?k=iPhone+14" },
@@ -42,7 +48,7 @@ const ELECTRONICS_CATALOG: CatalogProduct[] = [
   // ================= CAMERAS =================
   { name: "GoPro Hero 12", category: "camera", min: 9000, max: 15000, image: "https://images.unsplash.com/photo-1519183071298-a2962eadc53a?w=500&h=500&fit=crop", url: "https://amazon.com.mx/s?k=GoPro+Hero+12" },
   { name: "Canon EOS R50", category: "camera", min: 15000, max: 25000, image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&h=500&fit=crop", url: "https://amazon.com.mx/s?k=Canon+EOS+R50" },
-];
+])
 
 // =======================
 // IMPROVED FUZZY SEARCH
@@ -125,7 +131,7 @@ function mapToProductResult(
   query: string
 ): ProductResult {
   // Consistent price generation based on product name hash
-  const hash = product.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+const hash = product.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const priceSeed = (hash + index) % 100;
   const priceRange = product.max - product.min;
   const price = product.min + Math.floor((priceRange * priceSeed) / 100);
@@ -148,7 +154,7 @@ function mapToProductResult(
     storeName,
     url: storeUrl,
     imageUrl: product.image,
-    rating: +(3.5 + (Math.random() * 1.5)).toFixed(1),
+    rating: product.rating || +(Math.random() * (5 - 3.5) + 3.5).toFixed(1), // ⭐ entre 3.5 y 5.0
     reviewCount: Math.floor(Math.random() * 5000) + 100,
     inStock: Math.random() > 0.1,
     category: product.category,
@@ -332,9 +338,10 @@ interface CatalogProduct {
   max: number;
   image: string;
   url?: string;
+  rating?: number;
 }
 
-interface ProductResult {
+export interface ProductResult {
   id: string;
   title: string;
   description?: string;
