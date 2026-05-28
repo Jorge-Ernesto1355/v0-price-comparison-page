@@ -1,6 +1,9 @@
 import { ScanSearch } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function SiteHeader() {
+
+  const router = useRouter();
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
@@ -16,6 +19,7 @@ export function SiteHeader() {
           <span className="hidden text-sm text-muted-foreground sm:block">
             Compara precios de miles de productos en segundos
           </span>
+          <span className="hidden text-sm text-muted-foreground sm:block cursor-pointer" onClick={()=> router.push("FAQ")}>Preguntas frecuentes</span>
         </nav>
       </div>
     </header>
