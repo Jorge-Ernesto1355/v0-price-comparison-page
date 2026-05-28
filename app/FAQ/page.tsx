@@ -2,6 +2,7 @@
 import { useState } from "react";
 
 import { ChevronDown, Search } from "lucide-react";
+import { SiteHeader } from "@/components/site-header";
 
 const faqItems = [
   {
@@ -137,10 +138,11 @@ const highlightText = (text: string, query: string) => {
   });
 };
   return (
-    <section className="w-full bg-[#F4FFFB] py-24 px-6">
-      <div className="max-w-4xl mx-auto">
+    <section className="w-full bg-[#F4FFFB] pb-24 px-6">
+      <SiteHeader />  
+      <div className="max-w-4xl mx-auto pt-12">
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-16">
           <span className="text-[#38B293] bg-[#DDF8EE] px-4 py-2 rounded-full text-sm font-medium">
             FAQ
           </span>
@@ -258,9 +260,24 @@ const highlightText = (text: string, query: string) => {
             ¿No encontraste tu respuesta?
           </p>
 
-          <button className="bg-[#38B293] hover:bg-[#2D9479] text-white px-7 py-3 rounded-2xl font-medium transition-all duration-300 hover:scale-[1.02] shadow-lg shadow-[#38B293]/20">
-            Contactar soporte
-          </button>
+          <a
+  href="https://wa.me/6683216817?text=Hola,%20tengo%20una%20pregunta%20sobre..."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl flex items-center gap-2 transition-all"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+  >
+    <path d="M20.52 3.48A11.86 11.86 0 0012.06 0C5.5 0 .17 5.33.17 11.89c0 2.1.55 4.15 1.6 5.97L0 24l6.3-1.65a11.9 11.9 0 005.76 1.47h.01c6.56 0 11.89-5.33 11.89-11.89 0-3.18-1.24-6.17-3.44-8.45zM12.07 21.8a9.8 9.8 0 01-5-1.37l-.36-.21-3.74.98 1-3.65-.24-.37a9.77 9.77 0 01-1.5-5.24c0-5.42 4.41-9.83 9.84-9.83 2.63 0 5.1 1.02 6.96 2.88a9.79 9.79 0 012.88 6.95c0 5.43-4.41 9.84-9.84 9.84zm5.39-7.35c-.3-.15-1.77-.87-2.05-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.52.08-.8.37-.27.3-1.05 1.02-1.05 2.47s1.08 2.86 1.23 3.06c.15.2 2.12 3.24 5.13 4.54.72.31 1.28.5 1.72.64.72.23 1.37.2 1.88.12.57-.08 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" />
+  </svg>
+
+  Preguntas por WhatsApp
+</a>
         </div>
       </div>
     </section>
